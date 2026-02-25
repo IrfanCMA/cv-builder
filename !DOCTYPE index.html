@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional CV Builder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  display:flex;
+  flex-direction:row;
+  background:#f5f6fa;
+}
+
+.form{
+  width:35%;
+  padding:20px;
+  background:white;
+  height:100vh;
+  overflow:auto;
+  border-right:1px solid #ddd;
+}
+
+.preview{
+  width:65%;
+  padding:40px;
+  overflow:auto;
+}
+
+input, textarea, select{
+  width:100%;
+  padding:8px;
+  margin-bottom:10px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:8px 12px;
+  border:none;
+  background:#0073e6;
+  color:white;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+button:hover{
+  background:#005bb5;
+}
+
+.cv{
+  background:white;
+  padding:40px;
+  max-width:800px;
+  margin:auto;
+}
+
+/* TEMPLATE 1 – ATS SIMPLE */
+.ats h1{
+  font-size:28px;
+}
+
+/* TEMPLATE 2 – MODERN */
+.modern{
+  font-family: 'Segoe UI', sans-serif;
+}
+.modern h1{
+  color:#0073e6;
+}
+
+/* TEMPLATE 3 – EXECUTIVE */
+.executive{
+  font-family: Georgia, serif;
+}
+.executive h1{
+  border-bottom:2px solid black;
+}
+
+.section-title{
+  margin-top:20px;
+  font-weight:bold;
+  border-bottom:1px solid #000;
+}
+
+@media(max-width:900px){
+  body{flex-direction:column;}
+  .form, .preview{width:100%; height:auto;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="form">
+
+<h2>CV Builder</h2>
+
+<label>Choose Template</label>
+<select id="template" onchange="changeTemplate()">
+  <option value="ats">ATS Friendly</option>
+  <option value="modern">Modern</option>
+  <option value="executive">Executive</option>
+</select>
+
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="email" placeholder="Email">
+<input type="text" id="phone" placeholder="Phone">
+<input type="text" id="linkedin" placeholder="LinkedIn URL">
+<input type="text" id="github" placeholder="GitHub URL">
+
+<textarea id="summary" placeholder="Professional Summary"></textarea>
+
+<textarea id="skills" placeholder="Skills (comma separated)"></textarea>
+
+<textarea id="experience" placeholder="Experience (Job Title - Company - Description)"></textarea>
+
+<textarea id="projects" placeholder="Projects (Project Name - Description - Link)"></textarea>
+
+<textarea id="education" placeholder="Education (Degree - Institution - Year)"></textarea>
+
+<button onclick="updateCV()">Update CV</button>
+<button onclick="downloadPDF()">Download PDF</button>
+
+</div>
+
+<div class="preview">
+<div id="cv" class="cv ats">
+
+<h1 id="cv-name">Your Name</h1>
+<p id="cv-contact"></p>
+
+<div class="section-title">Professional Summary</div>
+<p id="cv-summary"></p>
+
+<div class="section-title">Skills</div>
+<p id="cv-skills"></p>
+
+<div class="section-title">Experience</div>
+<p id="cv-experience"></p>
+
+<div class="section-title">Projects</div>
+<p id="cv-projects"></p>
+
+<div class="section-title">Education</div>
+<p id="cv-education"></p>
+
+</div>
+</div>
+
+<script>
+
+function updateCV(){
+  document.getElementById("cv-name").innerText = name.value;
+
+  document.getElementById("cv-contact").innerHTML =
+    email.value + " | " + phone.value +
+    "<br>" + linkedin.value +
+    "<br>" + github.value;
+
+  document.getElementById("cv-summary").innerText = summary.value;
+  document.getElementById("cv-skills").innerText = skills.value;
+  document.getElementById("cv-experience").innerText = experience.value;
+  document.getElementById("cv-projects").innerText = projects.value;
+  document.getElementById("cv-education").innerText = education.value;
+}
+
+function changeTemplate(){
+  const cv = document.getElementById("cv");
+  cv.className = "cv " + template.value;
+}
+
+function downloadPDF(){
+  html2pdf().from(document.getElementById("cv")).save("My_CV.pdf");
+}
+
+</script>
+
+</body>
+</html>
